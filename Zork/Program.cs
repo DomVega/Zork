@@ -8,35 +8,40 @@ namespace Zork
         {
             Console.WriteLine("Welcome to Zork!");
 
-            string inputString = Console.ReadLine().ToUpper().Trim();
-            Commands command = ToCommand(inputString);
+            bool isRunning = true;
+            while (isRunning)
+            {
+                Console.Write("> ");
+                string inputString = Console.ReadLine().ToUpper().Trim();
+                Commands command = ToCommand(inputString);
 
-            if (command == Commands.Quit)
-            {
-                Console.WriteLine("Thank you for playing ");
-            }
-            else if (command == Commands.North)
-            {
-                Console.WriteLine("You move north.");
-            }
-            else if (command == Commands.East)
-            {
-                Console.WriteLine("You move east.");
-            }
-            else if (command == Commands.South)
-            {
-                Console.WriteLine("You move south.");
-            }
-            else if (command == Commands.West)
-            {
-                Console.WriteLine("You move west.");
-            }
-            //Add in north south east and west
-            else
-            {
-                Console.WriteLine("Unrecognized command.");
-            }
+                string outputString;
+                switch (command)
+                {
+                    case Commands.Quit:
+                        isRunning = false;
+                        outputString = "Thank you for playing!";
+                        break;
 
+                    case Commands.Look:
+                        outputString = "This is an open field west of a white house, with a boarded front door.\n A rubber mat saying 'Welcome to Zork!' lies by the door.";
+                        break;
+
+                    case Commands.North:
+                    case Commands.South:                     
+                    case Commands.East:                    
+                    case Commands.West:
+                        outputString = $"You moved {command}.";
+                        break;
+                      
+                    default:
+                        outputString = "Unknown command.";
+                        break;
+                }
+
+                Console.WriteLine(outputString);
+
+            }
         }
 
         static Commands ToCommand(string commandString)
@@ -52,51 +57,5 @@ namespace Zork
             }
 
         }
-
-        //static bool IsEvem(int value)
-        //{
-        //    return value % 2 == 0 ? true : false;
-        //
-        //    if (value % 2 == 0)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return Commands.Unknown;
-        //    }
-        //
-        //    return Enum.TryParse<Commands>(commandString, true, out Commands command) ? command : Commands.Unknown;
-        //}
     }
 }
-//switch (commandString)
-//{
-//    case "QUIT":
-//        command = Commands.Quit;
-//        break;
-//
-//    case "LOOK":
-//        command = Commands.Look;
-//        break;
-//
-//    case "NORTH":
-//        command = Commands.North;
-//        break;
-//
-//    case "SOUTH":
-//        command = Commands.South;
-//        break;
-//
-//    case "EAST":
-//        command = Commands.East;
-//        break;
-//
-//    case "WEST":
-//        command = Commands.West;
-//        break;
-//
-//    default:
-//        command = Commands.Unknown;
-//        break;
-//}
