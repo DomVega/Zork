@@ -11,8 +11,8 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write("> ");
-                string inputString = Console.ReadLine().ToUpper().Trim();
+                Console.Write($"{_rooms[_currentRoom]}\n > ");
+                string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
                 string outputString;
@@ -31,7 +31,14 @@ namespace Zork
                     case Commands.South:                     
                     case Commands.East:                    
                     case Commands.West:
-                        outputString = $"You moved {command}.";
+                        if (Move(command))
+                        {
+                            outputString = $"You moved {command}.";
+                        }
+                        else
+                        {
+                            outputString = "The way is shut!";
+                        }
                         break;
                       
                     default:
@@ -57,5 +64,35 @@ namespace Zork
             }
 
         }
+
+        private static bool Move(Commands command)
+        {
+            bool didMove;
+
+            switch (command)
+            {
+               
+                case Commands.North:
+                case Commands.South:
+                    didMove = false;
+                    break;
+
+                case Commands.East when _currentRoom < _rooms.Length - 1:
+                    _currentRoom++;
+                    didMove = true;
+                    break;
+
+                case Commands.West when _currentRoom > 0:
+                    _currentRoom--;
+                    didMove = true;
+                    break;
+               
+            }
+
+            return didMove;
+        }
+
+        private static readonly string[] _rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+        private static int _currentRoom = 1;
     }
 }
