@@ -67,11 +67,11 @@ namespace Zork
 
         private static bool Move(Commands command)
         {
-            bool didMove;
+            bool didMove = false;
 
             switch (command)
             {
-               
+
                 case Commands.North:
                 case Commands.South:
                     didMove = false;
