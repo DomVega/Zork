@@ -2,16 +2,27 @@
 
 namespace Zork
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static Room CurrentRoom
         {
+            get
+            {
+                return _rooms[_location.Row , _location.Column];
+            }
+        }
+
+
+        private static void Main(string[] args)
+        {
+            //InitializeRoomDescriptions();
+
             Console.WriteLine("Welcome to Zork!");
 
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write($"{_rooms[_currentRoom]}\n > ");
+                Console.Write($"{_rooms[_location.Row, _location.Column]}\n > ");
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
@@ -92,7 +103,18 @@ namespace Zork
             return didMove;
         }
 
-        private static readonly string[] _rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+        private static void InitializeRoomDescriptions()
+        {
+
+        }
+
+
+        private static readonly Room[,] _rooms = 
+        {
+            { new Room ("Rocky Trail"), new Room ("South of House"), new Room ("Canyon View") } ,
+            { new Room ("Forest"), new Room ("West of House"), new Room ("Behind House") } ,
+            { new Room ("Dense Woods"), new Room ("North of House"), new Room ("Clearing") }
+        };
         private static int _currentRoom = 1;
     }
 }
