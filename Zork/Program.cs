@@ -4,15 +4,6 @@ namespace Zork
 {
     internal class Program
     {
-        private static Room CurrentRoom
-        {
-            get
-            {
-                return _rooms[_location.Row , _location.Column];
-            }
-        }
-
-
         private static void Main(string[] args)
         {
             //InitializeRoomDescriptions();
@@ -22,7 +13,7 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write($"{_rooms[_location.Row, _location.Column]}\n > ");
+                Console.Write($"{_rooms[Location.Row, Location.Column]}\n > ");
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
@@ -83,18 +74,22 @@ namespace Zork
             switch (command)
             {
 
-                case Commands.North:
-                case Commands.South:
-                    didMove = false;
+                case Commands.North when Location.Row < _rooms.GetLength(0) - 1:
+                    Location.Row++;
+                    didMove = true;
                     break;
-
-                case Commands.East when _currentRoom < _rooms.Length - 1:
-                    _currentRoom++;
+                case Commands.South when Location.Row > 0:
+                    Location.Row--;
                     didMove = true;
                     break;
 
-                case Commands.West when _currentRoom > 0:
-                    _currentRoom--;
+                case Commands.East when Location.Column < _rooms.GetLength(1) - 1:
+                    Location.Column++;
+                    didMove = true;
+                    break;
+
+                case Commands.West when Location.Column > 0:
+                    Location.Column--;
                     didMove = true;
                     break;
                
@@ -103,18 +98,12 @@ namespace Zork
             return didMove;
         }
 
-        private static void InitializeRoomDescriptions()
+        private static readonly string[,] _rooms = 
         {
-
-        }
-
-
-        private static readonly Room[,] _rooms = 
-        {
-            { new Room ("Rocky Trail"), new Room ("South of House"), new Room ("Canyon View") } ,
-            { new Room ("Forest"), new Room ("West of House"), new Room ("Behind House") } ,
-            { new Room ("Dense Woods"), new Room ("North of House"), new Room ("Clearing") }
+            { "Rocky Trail", "South of House", "Canyon View" },
+            { "Forest", "West of House", "Behind House"},
+            { "Dense Woods", "North of House","Clearing" }
         };
-        private static int _currentRoom = 1;
+        private static (int Row, int Column) Location = (1,1 ); 
     }
 }
