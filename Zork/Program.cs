@@ -6,7 +6,7 @@ namespace Zork
     {
         private static void Main(string[] args)
         {
-            //InitializeRoomDescriptions();
+            InitializeRoomDescriptions();
 
             Console.WriteLine("Welcome to Zork!");
 
@@ -96,6 +96,11 @@ namespace Zork
             }
 
             return didMove;
+        }
+
+        private static void InitializeRoomDescriptions()
+        {
+            //_rooms[0, 0].Description = "You are onn a rock-strewn trail.";
         }
 
         private static readonly string[,] _rooms = 
