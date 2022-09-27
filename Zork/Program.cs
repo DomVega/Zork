@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace Zork
@@ -7,13 +8,22 @@ namespace Zork
     {
         private static void Main(string[] args)
         {
+
             InitializeRoomDescriptions();
             Console.WriteLine("Welcome to Zork!");
 
+            
+            Room previousRoom = null;
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write($"{_rooms[_location.Row, _location.Column]}\n > ");
+                Console.WriteLine(_rooms[_location.Row, _location.Column].ToString());
+                if (previousRoom != _rooms[_location.Row, _location.Column])
+                {
+                    Console.WriteLine(_rooms[_location.Row, _location.Column].Description);
+                    previousRoom = _rooms[_location.Row, _location.Column];
+                }
+                Console.Write(" > ");
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
@@ -100,17 +110,22 @@ namespace Zork
 
         private static void InitializeRoomDescriptions()
         {
-            _rooms[0, 0].Description = "You are onn a rock-strewn trail.";
-            _rooms[0, 1].Description = "You are facing the south side of a white house. There is no door here, and all the windows are barred.";      // Rocky Trail
-            _rooms[0, 2].Description = "You are at the top of the Great Canyon on its south wall";                                                      // South of House
-
-            _rooms[1, 0].Description = "This is a forest, with threes in all directions around you.";                                                   // Forest
-            _rooms[1, 1].Description = "This is an open field west of a white house, with a boarded front door.";                                       // West of House
-            _rooms[1, 2].Description = "You are behind the white house. in one corner of the house there is a small window which is slightly ajar.";    // Behind House
-
-            _rooms[2, 0].Description = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.";           // Dense Woods
-            _rooms[2, 1].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";        // North of House
-            _rooms[2, 2].Description = "You are in a clearing, with a froest surrounding yo on the west and south.";                                    // Clearing
+            var roomMap = new Dictionary<string, Room>();
+            foreach (Room room in _rooms)
+            {
+                roomMap.Add(room.Name, room);
+            }
+            roomMap["Rocky Trail"].Description = "You are on a rock-strewn trail.";
+            roomMap["South of House"].Description = "You are facing the south side of a white house. There is no door here, and all the windows are barred.";
+            roomMap["Canyon View"].Description = "You are at the top of the Great Canyon on its south wall";                                                 
+            
+            roomMap["Forest"].Description = "This is a forest, with trees in all directions around you.";                                                   
+            roomMap["West of House"].Description = "This is an open field west of a white house, with a boarded front door.";                                
+            roomMap["Behind House"].Description = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.";
+            
+            roomMap["Dense Woods"].Description = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.";        
+            roomMap["North of House"].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";  
+            roomMap["Clearing"].Description = "You are in a clearing, with a froest surrounding yo on the west and south.";                                    
         }
 
         private static readonly Room[,] _rooms =
