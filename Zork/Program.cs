@@ -8,8 +8,6 @@ namespace Zork
 {
     internal class Program
     {
-        private static readonly Dictionary<string, Room> RoomMap;
-
         private static void Main(string[] args)
         {
 
