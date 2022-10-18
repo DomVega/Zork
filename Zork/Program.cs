@@ -6,12 +6,18 @@ using System.Numerics;
 
 namespace Zork
 {
-    internal class Program
+    public class Program
     {
+        private static string CurrentRoom => Rooms[_location.Row, _location.Column];
         private static void Main(string[] args)
         {
+            const string defaultRoomsFilename = @"Content\Game.json";
+            string gameFilename = @"Content\Game.json";
+            Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));
 
-            string roomsFilename = @"Content\Rooms.json";
+
+
+            //string roomsFilename = @"Content\Rooms.json";
             InitializeRooms(roomsFilename);
             Console.WriteLine("Welcome to Zork!");
 
