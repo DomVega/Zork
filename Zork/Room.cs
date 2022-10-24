@@ -1,41 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace Zork
 {
     public class Room
     {
-        public string Name { get; set; }
-        
+        public string Name { get; }
+
         public string Description { get; set; }
 
         [JsonIgnore]
-        public Dictionary<Directions, Room> Properties { get; private set; }
+        public Dictionary<Directions, Room> Neighbors { get; private set; }
 
         [JsonProperty]
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
-        public List<Item> Inventory { get; }
+        public List<Item> Inventory { get; private set; }
 
-        public Room(string name,string description = null, Dictionary<Directions, string> neighborNames, List<Item> inventory)
+        [JsonProperty]
+        private string[] InventoryNames { get; set; }
+
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
         {
             Name = name;
             Description = description;
             NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
-            Inventory = inventory ?? new List<Item>();
+            InventoryNames = inventoryNames ?? new string[0];
         }
 
         public void UpdateNeighbors(World world)
         {
-            UpdateNeighbors = new Dictionary<Directions, Room>();
-            foreach (KeyValuePair<Directions, string> neighborName in NeighborNames)
+            Neighbors = new Dictionary<Directions, Room>();
+            foreach (var neighborName in NeighborNames)
             {
-                NeighborNames.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
+                Neighbors.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
             }
 
             NeighborNames = null;
+        }
+
+        public void UpdateInventory(World world)
+        {
+            Inventory = new List<Item>();
+            foreach (var inventoryName in InventoryNames)
+            {
+                Inventory.Add(world.ItemsByName[inventoryName]);
+            }
+            InventoryNames = null;
         }
         public override string ToString() => Name;
     }

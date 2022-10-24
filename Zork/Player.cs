@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Zork
 {
-    internal class Player
+    public class Player
     {
         public Room CurrentRoom
         {
@@ -27,7 +27,7 @@ namespace Zork
 
         public bool Move(Directions direction)
         {
-            bool didMove = CurrentRoom.Neighbors.TryGetValue(direction, out Room destination);
+            bool didMove = _currentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
             if (didMove)
             {
                 CurrentRoom = neighbor;

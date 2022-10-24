@@ -24,11 +24,11 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.WriteLine(Player._currentRoom);//Player.CurrentRoom?
-                if (previousRoom != Rooms[_location.Row, _location.Column])// != Player.CurrentRoom
+                Console.WriteLine(Player.CurrentRoom);//Player.CurrentRoom?
+                if (previousRoom != Player.CurrentRoom)// != Player.CurrentRoom
                 {
-                    Console.WriteLine(Rooms[_location.Row, _location.Column].Description);
-                    previousRoom = Rooms[_location.Row, _location.Column];
+                    Console.WriteLine(Player.CurrentRoom.Description);
+                    previousRoom = Player.CurrentRoom;
                 }
 
                 Console.Write(" > ");
@@ -45,7 +45,7 @@ namespace Zork
                         break;
 
                     case Commands.Look:
-                        outputString = $"{Rooms[_location.Row, _location.Column].Description}";
+                        outputString = $"{Player.CurrentRoom.Description}";
                         break;
 
                     case Commands.North:
