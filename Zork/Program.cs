@@ -8,8 +8,8 @@ namespace Zork
 {
     public class Program
     {
-        private static string CurrentRoom => Rooms[_location.Row, _location.Column];
-        private static void Main(string[] args)
+        string CurrentRoom => Rooms[_location.Row, _location.Column];
+        static void Main(string[] args) 
         {
             const string defaultRoomsFilename = @"Content\Game.json";
             string gameFilename = @"Content\Game.json";
@@ -20,6 +20,12 @@ namespace Zork
             //string roomsFilename = @"Content\Rooms.json";
             InitializeRooms(roomsFilename);
             Console.WriteLine("Welcome to Zork!");
+            //game.Run();
+
+        //    private enum CommandLineArguments
+        //{
+        //    GameFilename = 0 This goes outside of main
+        //}
 
 
             Room previousRoom = null;

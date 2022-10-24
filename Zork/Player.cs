@@ -7,33 +7,36 @@ namespace Zork
 {
     internal class Player
     {
-        public World World { get; }
-
-        [JsonIgnore]
-        public static Room _currentRoom
+        public Room CurrentRoom
         {
-            get => _curre
-            set
-            {
-                Location = World?.RoomsByName.GetValueOrDefault(value);
-            }
+            get => _currentRoom;
+            set => _currentRoom = value;
         }
+
+        public Item[] Inventory { get; }
 
         public Player (World world, string startingLocation)
         {
-            World = world;
-            LocationName = startingLocation;
+            _world = world;
+            
+            if (_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
+            {
+                throw new Exception($"Invalid starting location: {startingLocation}");
+            }
         }
 
         public bool Move(Directions direction)
         {
-            bool isValidMove = LocationName.Neighbors.TryGetValue(direction, out Room destination);
-            if (isValidMove)
+            bool didMove = CurrentRoom.Neighbors.TryGetValue(direction, out Room destination);
+            if (didMove)
             {
-                Location = destination;
+                CurrentRoom = neighbor;
             }
 
-            return isValidMove;
+            return didMove;
         }
+
+        private World _world;
+        private Room _currentRoom;
     }
 }
