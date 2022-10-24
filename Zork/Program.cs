@@ -6,13 +6,14 @@ using System.Numerics;
 
 namespace Zork
 {
+
     public class Program
     {
         string CurrentRoom => Rooms[_location.Row, _location.Column];
         static void Main(string[] args) 
         {
             const string defaultRoomsFilename = @"Content\Game.json";
-            string gameFilename = @"Content\Game.json";
+            string gameFilename = (args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : defaultRoomsFilename);
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));
 
 
@@ -22,77 +23,75 @@ namespace Zork
             Console.WriteLine("Welcome to Zork!");
             //game.Run();
 
-        //    private enum CommandLineArguments
-        //{
-        //    GameFilename = 0 This goes outside of main
-        //}
-
-
-            Room previousRoom = null;
-            bool isRunning = true;
-            while (isRunning)
-            {
-                Console.WriteLine(Rooms[_location.Row, _location.Column].ToString());
-                if (previousRoom != Rooms[_location.Row, _location.Column])
-                {
-                    Console.WriteLine(Rooms[_location.Row, _location.Column].Description);
-                    previousRoom = Rooms[_location.Row, _location.Column];
-                }
-                Console.Write(" > ");
-                string inputString = Console.ReadLine().Trim();
-                Commands command = ToCommand(inputString);
-
-                string outputString;
-                switch (command)
-                {
-                    case Commands.Quit:
-                        isRunning = false;
-                        outputString = "Thank you for playing!";
-                        break;
-
-                    case Commands.Look:
-                        outputString = $"{Rooms[_location.Row, _location.Column].Description}";
-                        break;
-
-                    case Commands.North:
-                    case Commands.South:
-                    case Commands.East:
-                    case Commands.West:
-                        if (Move(command))
-                        {
-                            outputString = $"You moved {command}.";
-                        }
-                        else
-                        {
-                            outputString = "The way is shut!";
-                        }
-                        break;
-
-                    default:
-                        outputString = "Unknown command.";
-                        break;
-                }
-
-                Console.WriteLine(outputString);
-
-            }
+            //Room previousRoom = null;
+            //bool isRunning = true;
+            //while (isRunning)
+            //{
+            //    Console.WriteLine(Rooms[_location.Row, _location.Column].ToString());
+            //    if (previousRoom != Rooms[_location.Row, _location.Column])
+            //    {
+            //        Console.WriteLine(Rooms[_location.Row, _location.Column].Description);
+            //        previousRoom = Rooms[_location.Row, _location.Column];
+            //    }
+            //    Console.Write(" > ");
+            //    string inputString = Console.ReadLine().Trim();
+            //    Commands command = ToCommand(inputString);
+            //
+            //    string outputString;
+            //    switch (command)
+            //    {
+            //        case Commands.Quit:
+            //            isRunning = false;
+            //            outputString = "Thank you for playing!";
+            //            break;
+            //
+            //        case Commands.Look:
+            //            outputString = $"{Rooms[_location.Row, _location.Column].Description}";
+            //            break;
+            //
+            //        case Commands.North:
+            //        case Commands.South:
+            //        case Commands.East:
+            //        case Commands.West:
+            //            if (Move(command))
+            //            {
+            //                outputString = $"You moved {command}.";
+            //            }
+            //            else
+            //            {
+            //                outputString = "The way is shut!";
+            //            }
+            //            break;
+            //
+            //        default:
+            //            outputString = "Unknown command.";
+            //            break;
+            //    }
+            //
+            //    Console.WriteLine(outputString);
+            //
+            //}
         }
-
-        static Commands ToCommand(string commandString)
+        private enum CommandLineArguments
         {
-            //Commands command;
-            if (Enum.TryParse<Commands>(commandString, true, out Commands command))
-            {
-                return command;
-            }
-            else
-            {
-                return Commands.Unknown;
-            }
-
+            GameFilename = 0
         }
 
-        private static bool Move(Commands command)
+    // static Commands ToCommand(string commandString)
+    // {
+    //     //Commands command;
+    //     if (Enum.TryParse<Commands>(commandString, true, out Commands command))
+    //     {
+    //         return command;
+    //     }
+    //     else
+    //     {
+    //         return Commands.Unknown;
+    //     }
+    //
+    // }
+
+    private static bool Move(Commands command)
         {
             bool didMove = false;
 

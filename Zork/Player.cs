@@ -13,7 +13,7 @@ namespace Zork
             set => _currentRoom = value;
         }
 
-        public Item[] Inventory { get; }
+        public List<Item> Inventory { get; }
 
         public Player (World world, string startingLocation)
         {
