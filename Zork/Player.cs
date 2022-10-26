@@ -23,11 +23,13 @@ namespace Zork
             {
                 throw new Exception($"Invalid starting location: {startingLocation}");
             }
+
+            Inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
         {
-            bool didMove = _currentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
+            bool didMove = CurrentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
             if (didMove)
             {
                 CurrentRoom = neighbor;

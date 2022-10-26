@@ -24,8 +24,8 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.WriteLine(Player.CurrentRoom);//Player.CurrentRoom?
-                if (previousRoom != Player.CurrentRoom)// != Player.CurrentRoom
+                Console.WriteLine(Player.CurrentRoom);
+                if (previousRoom != Player.CurrentRoom)
                 {
                     Console.WriteLine(Player.CurrentRoom.Description);
                     previousRoom = Player.CurrentRoom;

@@ -14,12 +14,12 @@ namespace Zork
         [JsonIgnore]
         public Dictionary<string, Room> RoomsByName { get; }
 
-        public Item[] Items { get; }
+        public List<Item> Items { get; }
 
         [JsonIgnore]
         public Dictionary<string, Item> ItemsByName { get; }
 
-        public World(Room[] rooms, Item[] items)
+        public World(Room[] rooms, List<Item> items)
         {
             Rooms = rooms;
             RoomsByName = new Dictionary<string, Room>(StringComparer.OrdinalIgnoreCase);
@@ -45,10 +45,5 @@ namespace Zork
                 room.UpdateInventory(this);
             }
         }
-
-        //[JsonProperty]
-        //private string StartingLocation { get; set; }
-        //
-        //private Dictionary<string, Room> mRoomsByName;
     }
 }
