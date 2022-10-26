@@ -14,12 +14,12 @@ namespace Zork
         [JsonIgnore]
         public Dictionary<string, Room> RoomsByName { get; }
 
-        public List<Item> Items { get; }
+        public Item[] Items { get; }
 
         [JsonIgnore]
         public Dictionary<string, Item> ItemsByName { get; }
 
-        public World(Room[] rooms, List<Item> items)
+        public World(Room[] rooms, Item[] items)
         {
             Rooms = rooms;
             RoomsByName = new Dictionary<string, Room>(StringComparer.OrdinalIgnoreCase);

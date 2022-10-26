@@ -33,7 +33,19 @@ namespace Zork
 
                 Console.Write(" > ");
 
-                
+                //Idea for assignment 9
+                /*string inputstring = Console.ReadLine().Trim();
+                char separator = ' ';
+                string[] commandTokens = inputstring.Split(separator);
+                if (commandTokens.Length == 0)
+                {
+                    continue; //Like break but continue does not exit the loop, it goes to the top of the loop
+                }
+                else if (commandTokens.Length == 1)
+                {
+
+                }*/
+
                 Commands command = ToCommand(Console.ReadLine().Trim());
 
                 string outputString;
@@ -46,6 +58,10 @@ namespace Zork
 
                     case Commands.Look:
                         outputString = $"{Player.CurrentRoom.Description}";
+                        /*foreach(Item item in Player.CurrentRoom.Description)
+                        {
+
+                        }*/
                         break;
 
                     case Commands.North:
