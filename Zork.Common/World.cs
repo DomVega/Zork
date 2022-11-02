@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using Newtonsoft.Json;
 
-namespace Zork
+namespace Zork.Common
 {
     public class World
     {
@@ -15,7 +13,7 @@ namespace Zork
         public Dictionary<string, Room> RoomsByName { get; }
 
         public Item[] Items { get; }
-
+        
         [JsonIgnore]
         public Dictionary<string, Item> ItemsByName { get; }
 
@@ -37,7 +35,7 @@ namespace Zork
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
+        private void OnDeserialized(StreamingContext streamingContext)
         {
             foreach (Room room in Rooms)
             {

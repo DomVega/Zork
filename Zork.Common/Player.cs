@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Zork
+namespace Zork.Common
 {
     public class Player
     {
@@ -15,10 +13,10 @@ namespace Zork
 
         public List<Item> Inventory { get; }
 
-        public Player (World world, string startingLocation)
+        public Player(World world, string startingLocation)
         {
             _world = world;
-            
+
             if (_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
             {
                 throw new Exception($"Invalid starting location: {startingLocation}");
@@ -29,7 +27,7 @@ namespace Zork
 
         public bool Move(Directions direction)
         {
-            bool didMove = CurrentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
+            bool didMove = _currentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
             if (didMove)
             {
                 CurrentRoom = neighbor;

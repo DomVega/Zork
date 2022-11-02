@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json;
 
-namespace Zork
+namespace Zork.Common
 {
     public class Room
     {
@@ -18,6 +15,7 @@ namespace Zork
         [JsonProperty]
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
+        [JsonIgnore]
         public List<Item> Inventory { get; private set; }
 
         [JsonProperty]
@@ -29,6 +27,36 @@ namespace Zork
             Description = description;
             NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
             InventoryNames = inventoryNames ?? new string[0];
+        }
+
+        public static bool operator ==(Room lhs, Room rhs)
+        {
+            if (ReferenceEquals(lhs, rhs))
+            {
+                return true;
+            }
+
+            if (lhs is null || rhs is null)
+            {
+                return false;
+            }
+
+            return string.Compare(lhs.Name, rhs.Name, ignoreCase: true) == 0;
+        }
+
+        public static bool operator !=(Room lhs, Room rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Room other && other == this;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public void UpdateNeighbors(World world)
@@ -49,8 +77,10 @@ namespace Zork
             {
                 Inventory.Add(world.ItemsByName[inventoryName]);
             }
+
             InventoryNames = null;
         }
+
         public override string ToString() => Name;
     }
 }

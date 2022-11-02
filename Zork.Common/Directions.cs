@@ -1,5 +1,5 @@
-﻿namespace Zork
-{ 
+﻿namespace Zork.Common
+{
     public enum Directions
     {
         North = Commands.North,

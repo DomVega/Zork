@@ -1,9 +1,9 @@
-﻿namespace Zork
+﻿namespace Zork.Common
 {
     public enum Commands
     {
-        Quit = 0,
-        Look = 1,
+        Quit,
+        Look,
         North,
         South,
         East,
