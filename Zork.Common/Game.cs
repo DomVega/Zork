@@ -8,6 +8,10 @@ namespace Zork.Common
 
         public Player Player { get; }
 
+        public Room Room { get; }
+
+        public Item Item { get; }
+
         public IOutputService Output { get; private set; }
 
         public Game(World world, string startingLocation)
@@ -66,6 +70,8 @@ namespace Zork.Common
 
                     case Commands.Look:
                         outputString = Player.CurrentRoom.Description;
+                        outputString = Item.Description;
+                        
                         break;
 
                     case Commands.North:
@@ -84,7 +90,15 @@ namespace Zork.Common
                         break;
 
                     case Commands.Take:
-                        //TODO
+                        Item itemToTake = Room.Inventory.Find(item => string.Compare(item.Name, subject, ignoreCase: true) == 0);
+                        /*foreach (Item item in Room.Inventory)
+                        {
+                            if (string.Compare(item.Name, subject, ignoreCase: true) == 0)
+                            {
+                                itemToTake = item;
+                                break;
+                            }
+                        }*/
                         outputString = null;
                         break;
 
