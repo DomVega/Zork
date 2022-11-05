@@ -71,13 +71,15 @@ namespace Zork.Common
                         break;
 
                     case Commands.Look:
+                        outputString = Player.CurrentRoom.Description;
+                        Output.WriteLine(outputString);
                         foreach (Item item in Player.CurrentRoom.Inventory)
                         {
                             outputString = $"{item.Description}";
                             Output.WriteLine(outputString);
                             
                         }
-                        outputString = Player.CurrentRoom.Description;
+                        outputString = null;
                         break;
 
                     case Commands.North:
@@ -129,7 +131,7 @@ namespace Zork.Common
                         }
 
                 
-                outputString = null;
+                        outputString = null;
                         break;
 
                     case Commands.Drop:
@@ -176,11 +178,14 @@ namespace Zork.Common
                         foreach (Item item in Player.Inventory)
                         {
                             outputString = $"{item.Description}";
+                            Output.WriteLine(outputString);
                         }
                         if (outputString == null)
                         {
                             outputString = "You are empty-handed!";
+                            Output.WriteLine(outputString);
                         }
+                        outputString = null;
                         break;
 
                     default:
