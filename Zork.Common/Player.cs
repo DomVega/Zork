@@ -11,7 +11,7 @@ namespace Zork.Common
             set => _currentRoom = value;
         }
 
-        public List<Item> Inventory { get; }
+        public List<Item> Inventory { get; private set; }
 
         public Player(World world, string startingLocation)
         {
@@ -36,6 +36,17 @@ namespace Zork.Common
             return didMove;
         }
 
+        public void AddToInventory(Item itemToAdd)
+        {
+            Inventory = new List<Item>();
+        }
+
+        public void RemoveFromInventory(Item itemToDrop)
+        {
+
+        }
+
+        private Game _game;
         private World _world;
         private Room _currentRoom;
     }

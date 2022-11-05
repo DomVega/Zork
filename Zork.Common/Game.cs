@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace Zork.Common
 {
@@ -39,9 +40,9 @@ namespace Zork.Common
 
                 string inputString = Console.ReadLine().Trim();
                 // might look like:  "LOOK", "TAKE MAT", "QUIT"
-                char  separator = ' ';
+                char separator = ' ';
                 string[] commandTokens = inputString.Split(separator);
-                
+
                 string verb = null;
                 string subject = null;
                 if (commandTokens.Length == 0)
@@ -69,9 +70,13 @@ namespace Zork.Common
                         break;
 
                     case Commands.Look:
+                        foreach (Item item in Player.CurrentRoom.Inventory)
+                        {
+                            outputString = $"{item.Description}";
+                            Output.WriteLine(outputString);
+                            
+                        }
                         outputString = Player.CurrentRoom.Description;
-                        outputString = Item.Description;
-                        
                         break;
 
                     case Commands.North:
@@ -90,26 +95,98 @@ namespace Zork.Common
                         break;
 
                     case Commands.Take:
-                        Item itemToTake = Room.Inventory.Find(item => string.Compare(item.Name, subject, ignoreCase: true) == 0);
-                        /*foreach (Item item in Room.Inventory)
+                        //Item itemToTake = Player.CurrentRoom.Inventory.Find(item => string.Compare(item.Name, subject, ignoreCase: true) == 0);
+
+                        Item itemToAdd = null;
+                        string itemName = null;
+                        foreach (Item item in Player.CurrentRoom.Inventory)
                         {
-                            if (string.Compare(item.Name, subject, ignoreCase: true) == 0)
+                            if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
                             {
-                                itemToTake = item;
+                                itemToAdd = item;
                                 break;
                             }
-                        }*/
-                        outputString = null;
+                        }
+
+                        if (itemToAdd == null)
+                        {
+                            throw new ArgumentException("No such item exists.");
+                        }
+
+                        bool itemIsInRoomInventory = false;
+                        foreach (Item item in Player.CurrentRoom.Inventory)
+                        {
+                            if (item == itemToAdd)
+                            {
+                                itemIsInRoomInventory = true;
+                                break;
+                            }
+                        }
+
+                        if (itemIsInRoomInventory == false)
+                        {
+                            Output.WriteLine("I can't see any such thing");
+                        }
+                        else
+                        {
+                            Room.RemoveFromInventory(itemToAdd);
+                            Player.AddToInventory(itemToAdd);
+                            Output.WriteLine("Taken");
+                        }
+
+                
+                outputString = null;
                         break;
 
                     case Commands.Drop:
-                        //TODO
+                        Item itemToDrop = null;
+                        
+                        foreach (Item item in World.Items)
+                        {
+                            if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                            {
+                                itemToDrop = item;
+                                break;
+                            }
+                        }
+                        if (itemToDrop == null)
+                        {
+                            throw new ArgumentException("No such item exists.");
+                        }
+
+                        bool itemIsInPlayerInventory = false;
+                        foreach (Item item in Player.Inventory)
+                        {
+                            if (item == itemToDrop)
+                            {
+                                itemIsInPlayerInventory = true;
+                                break;
+                            }
+                        }
+
+                        if (itemIsInPlayerInventory == false)
+                        {
+                            Output.WriteLine("I can't see any such thing");
+                        }
+                        else
+                        {
+                            Player.CurrentRoom.AddToInventory(itemToDrop);
+                            Player.RemoveFromInventory(itemToDrop);
+                            Output.WriteLine("Dropped");
+                        }
                         outputString = null;
                         break;
 
                     case Commands.Inventory:
-                        //TODO
                         outputString = null;
+                        foreach (Item item in Player.Inventory)
+                        {
+                            outputString = $"{item.Description}";
+                        }
+                        if (outputString == null)
+                        {
+                            outputString = "You are empty-handed!";
+                        }
                         break;
 
                     default:
