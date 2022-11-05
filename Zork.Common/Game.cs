@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Zork.Common
@@ -95,22 +96,14 @@ namespace Zork.Common
                         break;
 
                     case Commands.Take:
-                        //Item itemToTake = Player.CurrentRoom.Inventory.Find(item => string.Compare(item.Name, subject, ignoreCase: true) == 0);
-
                         Item itemToAdd = null;
-                        string itemName = null;
                         foreach (Item item in Player.CurrentRoom.Inventory)
                         {
-                            if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                            if (string.Compare(item.Name, subject, ignoreCase: true) == 0)
                             {
                                 itemToAdd = item;
                                 break;
                             }
-                        }
-
-                        if (itemToAdd == null)
-                        {
-                            throw new ArgumentException("No such item exists.");
                         }
 
                         bool itemIsInRoomInventory = false;
@@ -125,13 +118,14 @@ namespace Zork.Common
 
                         if (itemIsInRoomInventory == false)
                         {
-                            Output.WriteLine("I can't see any such thing");
+                            Output.WriteLine("You can't see any such thing");
                         }
                         else
                         {
-                            Room.RemoveFromInventory(itemToAdd);
-                            Player.AddToInventory(itemToAdd);
-                            Output.WriteLine("Taken");
+
+                            Player.CurrentRoom.Inventory.Remove(itemToAdd);
+                            Player.Inventory.Add(itemToAdd);
+                            Output.WriteLine($"{subject} taken");
                         }
 
                 
@@ -139,11 +133,11 @@ namespace Zork.Common
                         break;
 
                     case Commands.Drop:
-                        Item itemToDrop = null;
                         
+                        Item itemToDrop = null;
                         foreach (Item item in World.Items)
                         {
-                            if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                            if (string.Compare(item.Name, subject, ignoreCase: true) == 0)
                             {
                                 itemToDrop = item;
                                 break;
@@ -170,9 +164,9 @@ namespace Zork.Common
                         }
                         else
                         {
-                            Player.CurrentRoom.AddToInventory(itemToDrop);
-                            Player.RemoveFromInventory(itemToDrop);
-                            Output.WriteLine("Dropped");
+                            Player.CurrentRoom.Inventory.Add(itemToDrop);
+                            Player.Inventory.Remove(itemToDrop);
+                            Output.WriteLine($"{subject} dropped");
                         }
                         outputString = null;
                         break;

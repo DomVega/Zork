@@ -83,12 +83,11 @@ namespace Zork.Common
 
         public void AddToInventory(Item itemToAdd)
         {
-
         }
 
         public void RemoveFromInventory(Item itemToRemove)
         {
-
+            Inventory.Remove(itemToRemove);
         }
 
         public override string ToString() => Name;

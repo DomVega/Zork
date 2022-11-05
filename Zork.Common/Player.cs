@@ -38,7 +38,7 @@ namespace Zork.Common
 
         public void AddToInventory(Item itemToAdd)
         {
-            Inventory = new List<Item>();
+            Inventory.Add(itemToAdd);
         }
 
         public void RemoveFromInventory(Item itemToDrop)
