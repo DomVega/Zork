@@ -5,7 +5,7 @@ using Zork.Common;
 
 namespace Zork.Cli
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
@@ -14,10 +14,18 @@ namespace Zork.Cli
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));
 
             var output = new ConsoleOutputService();
+            var input = new ConsoleInputService();
 
-            Console.WriteLine("Welcome to Zork!");
-            game.Run(output);
-            Console.WriteLine("Finished.");
+            output.WriteLine("Welcome to Zork!");
+            game.Run(input, output);
+
+            while (game.IsRunning)
+            {
+                game.Output.Write("> ");
+                input.ProcessInput();
+            }
+
+            output.WriteLine("Finished.");
         }
 
         private enum CommandLineArguments
